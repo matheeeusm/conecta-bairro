@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -57,6 +57,52 @@ class ItemPedido(db.Model):
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/produtos", methods=["GET", "POST"])
+def produtos():
+
+    erro = None
+
+    if request.method == "POST":
+        nome = request.form.get("nome", "").strip()
+        preco_texto = request.form.get("preco", "").strip()
+
+        if not nome:
+            erro = "Informe o nome do produto."
+
+        elif not preco_texto:
+            erro = "Informe o preço do produto."
+
+        else:
+            try:
+                preco = float(preco_texto.replace(",", "."))
+
+                if preco <= 0:
+                    erro = "O preço deve ser maior que zero."
+
+                else:
+                    novo_produto = Produto(
+                        nome=nome,
+                        preco=preco,
+                        disponivel=True
+                    )
+
+                    db.session.add(novo_produto)
+                    db.session.commit()
+
+                    return redirect(url_for("produtos"))
+
+            except ValueError:
+                erro = "Informe um preço válido."
+
+    lista_produtos = Produto.query.order_by(Produto.id.desc()).all()
+
+    return render_template(
+        "produtos.html",
+        produtos=lista_produtos,
+        erro=erro
+    )
 
 
 with app.app_context():

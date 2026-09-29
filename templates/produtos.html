@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="page-header">
+    <h2>Produtos</h2>
+    <p>Cadastre e consulte os produtos disponíveis.</p>
+</section>
+
+<div class="produto-grid">
+
+    <section class="card">
+        <h3>Cadastrar produto</h3>
+
+        {% if erro %}
+        <div class="alerta">
+            {{ erro }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <label for="nome">Nome do produto</label>
+            <input
+                type="text"
+                id="nome"
+                name="nome"
+                placeholder="Ex.: Arroz 5 kg"
+                required
+            >
+
+            <label for="preco">Preço</label>
+            <input
+                type="text"
+                id="preco"
+                name="preco"
+                placeholder="Ex.: 25,90"
+                required
+            >
+
+            <button type="submit">
+                Cadastrar produto
+            </button>
+
+        </form>
+    </section>
+
+
+    <section class="card">
+
+        <h3>Produtos cadastrados</h3>
+
+        {% if produtos %}
+
+            {% for produto in produtos %}
+
+            <div class="produto-item">
+
+                <div>
+                    <strong>{{ produto.nome }}</strong>
+                    <p>
+                        R$ {{ "%.2f"|format(produto.preco) }}
+                    </p>
+                </div>
+
+                <span class="status">
+                    Disponível
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>Nenhum produto cadastrado.</p>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+<a href="{{ url_for('index') }}" class="voltar">
+    ← Voltar ao painel
+</a>
+
+{% endblock %}
