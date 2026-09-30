@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Pedidos | Conecta Bairro{% endblock %}
+
+{% block content %}
+
+<section class="painel">
+
+    <h2>Pedidos</h2>
+    <p>Registre e acompanhe os pedidos do estabelecimento.</p>
+
+    <div class="card-form">
+        <h3>Novo pedido</h3>
+
+        {% if erro %}
+            <p class="erro" role="alert">{{ erro }}</p>
+        {% endif %}
+
+        <form method="POST">
+
+            <label for="cliente_id">Cliente</label>
+            <select id="cliente_id" name="cliente_id" required>
+                <option value="">Selecione um cliente</option>
+
+                {% for cliente in clientes %}
+                    <option value="{{ cliente.id }}">
+                        {{ cliente.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="produto_id">Produto</label>
+            <select id="produto_id" name="produto_id" required>
+                <option value="">Selecione um produto</option>
+
+                {% for produto in produtos %}
+                    <option value="{{ produto.id }}">
+                        {{ produto.nome }} —
+                        R$ {{ "%.2f"|format(produto.preco) }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="quantidade">Quantidade</label>
+            <input
+                type="number"
+                id="quantidade"
+                name="quantidade"
+                min="1"
+                value="1"
+                required
+            >
+
+            <button type="submit">
+                Registrar pedido
+            </button>
+
+        </form>
+    </div>
+
+    <div class="card-form">
+        <h3>Pedidos cadastrados</h3>
+
+        {% if pedidos %}
+
+            {% for pedido in pedidos %}
+
+                <div class="pedido">
+
+                    <h4>Pedido #{{ pedido.id }}</h4>
+
+                    <p>
+                        <strong>Cliente:</strong>
+                        {{ pedido.cliente.nome }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        {{ pedido.status }}
+                    </p>
+
+                    <p>
+                        <strong>Data:</strong>
+                        {{ pedido.criado_em.strftime("%d/%m/%Y %H:%M") }}
+                    </p>
+
+                    {% for item in pedido.itens %}
+
+                        <p>
+                            <strong>Produto:</strong>
+                            {{ item.produto.nome }}
+                        </p>
+
+                        <p>
+                            <strong>Quantidade:</strong>
+                            {{ item.quantidade }}
+                        </p>
+
+                        <p>
+                            <strong>Valor unitário:</strong>
+                            R$ {{ "%.2f"|format(item.preco_unitario) }}
+                        </p>
+
+                        <p>
+                            <strong>Total:</strong>
+                            R$ {{ "%.2f"|format(
+                                item.quantidade * item.preco_unitario
+                            ) }}
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>Nenhum pedido cadastrado.</p>
+
+        {% endif %}
+
+    </div>
+
+    <p>
+        <a href="{{ url_for('index') }}">
+            ← Voltar ao painel
+        </a>
+    </p>
+
+</section>
+
+{% endblock %}
