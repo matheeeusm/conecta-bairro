@@ -264,6 +264,32 @@ def pedidos():
     )
 
 # =========================
+# ATUALIZAÇÃO DE STATUS
+# =========================
+
+@app.route("/pedidos/<int:pedido_id>/status", methods=["POST"])
+def atualizar_status(pedido_id):
+    pedido = db.session.get(Pedido, pedido_id)
+
+    if not pedido:
+        return redirect(url_for("pedidos"))
+
+    novo_status = request.form.get("status", "").strip()
+
+    status_permitidos = [
+        "Recebido",
+        "Em preparação",
+        "Pronto",
+        "Entregue"
+    ]
+
+    if novo_status in status_permitidos:
+        pedido.status = novo_status
+        db.session.commit()
+
+    return redirect(url_for("pedidos"))
+
+# =========================
 # CRIAÇÃO DO BANCO
 # =========================
 

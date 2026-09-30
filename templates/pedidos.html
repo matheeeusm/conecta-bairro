@@ -75,9 +75,58 @@
                     </p>
 
                     <p>
-                        <strong>Status:</strong>
-                        {{ pedido.status }}
+                        <strong>Status atual:</strong>
+                        <span class="status">{{ pedido.status }}</span>
                     </p>
+                    
+                    <form
+                        method="POST"
+                        action="{{ url_for('atualizar_status', pedido_id=pedido.id) }}"
+                    >
+                    
+                        <label for="status-{{ pedido.id }}">
+                            Alterar status
+                        </label>
+                    
+                        <select
+                            id="status-{{ pedido.id }}"
+                            name="status"
+                            required
+                        >
+                            <option
+                                value="Recebido"
+                                {% if pedido.status == "Recebido" %}selected{% endif %}
+                            >
+                                Recebido
+                            </option>
+                    
+                            <option
+                                value="Em preparação"
+                                {% if pedido.status == "Em preparação" %}selected{% endif %}
+                            >
+                                Em preparação
+                            </option>
+                    
+                            <option
+                                value="Pronto"
+                                {% if pedido.status == "Pronto" %}selected{% endif %}
+                            >
+                                Pronto
+                            </option>
+                    
+                            <option
+                                value="Entregue"
+                                {% if pedido.status == "Entregue" %}selected{% endif %}
+                            >
+                                Entregue
+                            </option>
+                        </select>
+                    
+                        <button type="submit">
+                            Atualizar status
+                        </button>
+                    
+                    </form>
 
                     <p>
                         <strong>Data:</strong>
