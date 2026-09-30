@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Clientes | Conecta Bairro{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+    <h2>Clientes</h2>
+    <p>Cadastre e consulte os clientes do estabelecimento.</p>
+</section>
+
+<div class="produto-grid">
+
+    <section class="card">
+
+        <h3>Cadastrar cliente</h3>
+
+        {% if erro %}
+        <div class="alerta">
+            {{ erro }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <label for="nome">Nome do cliente</label>
+
+            <input
+                type="text"
+                id="nome"
+                name="nome"
+                placeholder="Ex.: Cliente Teste"
+                required
+            >
+
+            <label for="telefone">Telefone (opcional)</label>
+
+            <input
+                type="text"
+                id="telefone"
+                name="telefone"
+                placeholder="Ex.: (11) 99999-0000"
+            >
+
+            <button type="submit">
+                Cadastrar cliente
+            </button>
+
+        </form>
+
+    </section>
+
+    <section class="card">
+
+        <h3>Clientes cadastrados</h3>
+
+        {% if clientes %}
+
+            {% for cliente in clientes %}
+
+            <div class="produto-item">
+
+                <div>
+                    <strong>{{ cliente.nome }}</strong>
+
+                    {% if cliente.telefone %}
+                    <p>{{ cliente.telefone }}</p>
+                    {% else %}
+                    <p>Telefone não informado</p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>Nenhum cliente cadastrado.</p>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+<a href="{{ url_for('index') }}" class="voltar">
+    ← Voltar ao painel
+</a>
+
+{% endblock %}

@@ -59,6 +59,117 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/clientes", methods=["GET", "POST"])
+def clientes():
+    erro = None
+
+    if request.method == "POST":
+        nome = request.form.get("nome", "").strip()
+        telefone = request.form.get("telefone", "").strip()
+
+        if not nome:
+            erro = "Informe o nome do cliente."
+        else:
+            novo_cliente = Cliente(
+                nome=nome,
+                telefone=telefone
+            )
+
+            db.session.add(novo_cliente)
+            db.session.commit()
+
+            return redirect(url_for("clientes"))
+
+    lista_clientes = Cliente.query.order_by(Cliente.id.desc()).all()
+
+    return render_template(
+        "clientes.html",
+        clientes=lista_clientes,
+        erro=erro
+    )
+
+
+@app.route("/produtos", methods=["GET", "POST"])
+def produtos():
+    erro = None
+
+    if request.method == "POST":
+        nome = request.form.get("nome", "").strip()
+        preco_texto = request.form.get("preco", "").strip()
+
+        if not nome:
+            erro = "Informe o nome do produto."
+
+        elif not preco_texto:
+            erro = "Informe o preço do produto."
+
+        else:
+            try:
+                preco = float(preco_texto.replace(",", "."))
+
+                if preco <= 0:
+                    erro = "O preço deve ser maior que zero."
+
+                else:
+                    novo_produto = Produto(
+                        nome=nome,
+                        preco=preco,
+                        disponivel=True
+                    )
+
+                    db.session.add(novo_produto)
+                    db.session.commit()
+
+                    return redirect(url_for("produtos"))
+
+            except ValueError:
+                erro = "Informe um preço válido."
+
+    lista_produtos = Produto.query.order_by(Produto.id.desc()).all()
+
+    return render_template(
+        "produtos.html",
+        produtos=lista_produtos,
+        erro=erro
+    )
+
+
+with app.app_context():
+    db.create_all()
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+def clientes():
+
+    erro = None
+
+    if request.method == "POST":
+        nome = request.form.get("nome", "").strip()
+        telefone = request.form.get("telefone", "").strip()
+
+        if not nome:
+            erro = "Informe o nome do cliente."
+        else:
+            novo_cliente = Cliente(
+                nome=nome,
+                telefone=telefone
+            )
+
+            db.session.add(novo_cliente)
+            db.session.commit()
+
+            return redirect(url_for("clientes"))
+
+    lista_clientes = Cliente.query.order_by(Cliente.id.desc()).all()
+
+    return render_template(
+        "clientes.html",
+        clientes=lista_clientes,
+        erro=erro
+    )
+
+
 @app.route("/produtos", methods=["GET", "POST"])
 def produtos():
 
