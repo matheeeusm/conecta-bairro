@@ -15,6 +15,15 @@
 <header>
     <h1>Conecta Bairro</h1>
     <p>Gestão simples para pequenos comércios</p>
+
+    <button
+        id="botao-contraste"
+        class="botao-acessibilidade"
+        type="button"
+        aria-pressed="false"
+        onclick="alternarContraste()">
+        ◐ Alto contraste
+    </button>
 </header>
 
 <main>
@@ -25,6 +34,25 @@
 <footer>
     <p>Conecta Bairro — MVP Acadêmico</p>
 </footer>
+
+<script>
+    function alternarContraste() {
+        const corpo = document.body;
+        const botao = document.getElementById("botao-contraste");
+
+        corpo.classList.toggle("alto-contraste");
+
+        const ativo = corpo.classList.contains("alto-contraste");
+
+        botao.setAttribute("aria-pressed", ativo);
+
+        if (ativo) {
+            botao.textContent = "◐ Desativar alto contraste";
+        } else {
+            botao.textContent = "◐ Alto contraste";
+        }
+    }
+</script>
 
 </body>
 </html>

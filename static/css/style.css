@@ -302,3 +302,69 @@ button {
         width: 100%;
     }
 }
+/* Recurso de acessibilidade - Alto Contraste */
+
+.botao-acessibilidade {
+    margin-top: 10px;
+    padding: 10px 16px;
+    border: 2px solid white;
+    border-radius: 6px;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-acessibilidade:hover,
+.botao-acessibilidade:focus {
+    background: white;
+    color: #000;
+    outline: 3px solid #ffeb3b;
+    outline-offset: 3px;
+}
+
+body.alto-contraste {
+    background: #000;
+    color: #fff;
+}
+
+body.alto-contraste header {
+    background: #000;
+    color: #fff;
+    border-bottom: 3px solid #ffeb3b;
+}
+
+body.alto-contraste main {
+    color: #fff;
+}
+
+body.alto-contraste .card {
+    background: #111;
+    color: #fff;
+    border: 2px solid #ffeb3b;
+}
+
+body.alto-contraste .card h3,
+body.alto-contraste .card p {
+    color: #fff;
+}
+
+body.alto-contraste a {
+    color: #ffeb3b;
+}
+
+body.alto-contraste input,
+body.alto-contraste select {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+body.alto-contraste button {
+    border: 2px solid #ffeb3b;
+}
+
+body.alto-contraste footer {
+    color: #fff;
+}
